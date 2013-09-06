@@ -535,6 +535,10 @@ class ViEval(sublime_plugin.TextCommand):
         motion_repeat = int(motion_repeat)
         motion_mode = int(motion_mode)
 
+        # Delete and yank should operate on entire lines when moving vertically
+        if action_command in ['vi_delete', 'vi_copy'] and motion_args.get('by', None) == 'lines':
+            motion_mode = MOTION_MODE_LINE
+            
         # Combine the prefix_repeat and motion_repeat into motion_repeat, to
         # allow commands like 2yy to work by first doing the motion twice,
         # then operating once
